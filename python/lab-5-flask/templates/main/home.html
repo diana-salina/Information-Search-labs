@@ -1,0 +1,33 @@
+{% extends "main/base.html" %}
+
+{% block title %}Главная страница{% endblock %}
+
+{% block content %}
+
+<div style="margin-top: 30px;">
+    <h3>Университеты</h3>
+    <p>Управление университетами: создание, просмотр, редактирование и удаление.</p>
+    <p><strong>Поля:</strong></p>
+    <ul>
+        <li>Полное название</li>
+        <li>Сокращённое название</li>
+        <li>Дата создания</li>
+    </ul>
+    <a href="{{ url_for('university_list') }}" class="btn btn-primary">Перейти к университетам</a>
+</div>
+
+<div style="margin-top: 30px;">
+    <h3>Студенты</h3>
+    <p>Управление студентами: создание, просмотр, редактирование и удаление.</p>
+    <p><strong>Поля:</strong></p>
+    <ul>
+        <li>ФИО</li>
+        <li>Дата рождения</li>
+        <li>Университет (выбор из списка университетов в базе данных)</li>
+        <li>Год поступления</li>
+    </ul>
+    <a href="{{ url_for('student_list') }}" class="btn btn-primary">Перейти к студентам</a>
+</div>
+
+{% endblock %}
+

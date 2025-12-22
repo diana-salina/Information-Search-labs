@@ -2,6 +2,9 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import University, Student
 from .forms import UniversityForm, StudentForm
 
+def home(request):
+    return render(request, "main/home.html")
+
 def university_list(request):
     universities = University.objects.all()
     return render(request, "main/university_list.html", {"universities": universities})

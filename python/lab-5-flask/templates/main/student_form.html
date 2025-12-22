@@ -1,0 +1,41 @@
+{% extends "main/base.html" %}
+
+{% block title %}{% if student %}Редактирование студента{% else %}Создание студента{% endif %}{% endblock %}
+
+{% block content %}
+<h2>{% if student %}Редактирование студента{% else %}Создание нового студента{% endif %}</h2>
+
+<form method="post">
+    <div class="form-group">
+        <label for="full_name">ФИО</label>
+        <input type="text" id="full_name" name="full_name" value="{{ student.full_name if student else '' }}" required>
+    </div>
+    
+    <div class="form-group">
+        <label for="birth_date">Дата рождения</label>
+        <input type="date" id="birth_date" name="birth_date" value="{{ student.birth_date.strftime('%Y-%m-%d') if student else '' }}" required>
+    </div>
+    
+    <div class="form-group">
+        <label for="university_id">Университет</label>
+        <select id="university_id" name="university_id" required>
+            <option value="">-- Выберите университет --</option>
+            {% for uni in universities %}
+                <option value="{{ uni.id }}" {% if student and student.university_id == uni.id %}selected{% endif %}>
+                    {{ uni.short_name }} ({{ uni.full_name }})
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+    
+    <div class="form-group">
+        <label for="admission_year">Год поступления</label>
+        <input type="number" id="admission_year" name="admission_year" min="1900" max="2100" value="{{ student.admission_year if student else '' }}" required>
+    </div>
+    
+    <div class="form-actions">
+        <button type="submit" class="btn btn-success">Сохранить</button>
+        <a href="{{ url_for('student_list') }}" class="btn btn-primary">Отмена</a>
+    </div>
+</form>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends "main/base.html" %}
+
+{% block title %}Список студентов{% endblock %}
+
+{% block content %}
+<h2>Список студентов</h2>
+<a href="{{ url_for('student_create') }}" class="btn btn-primary">Добавить студента</a>
+
+{% if students %}
+<table>
+    <thead>
+        <tr>
+            <th>ФИО</th>
+            <th>Дата рождения</th>
+            <th>Университет</th>
+            <th>Год поступления</th>
+            <th>Действия</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for student in students %}
+        <tr>
+            <td>{{ student.full_name }}</td>
+            <td>{{ student.birth_date.strftime("%d.%m.%Y") }}</td>
+            <td>{{ student.university.short_name if student.university else '' }}</td>
+            <td>{{ student.admission_year }}</td>
+            <td class="actions">
+                <a href="{{ url_for('student_update', student_id=student.id) }}" class="btn btn-warning">Редактировать</a>
+                <form action="{{ url_for('student_delete', student_id=student.id) }}" method="post" style="display:inline;">
+                    <button type="submit" class="btn btn-danger" onclick="return confirm('Удалить студента?')">Удалить</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<div class="empty-state">
+    <p>Студенты не найдены. <a href="{{ url_for('student_create') }}">Добавить первого студента</a></p>
+</div>
+{% endif %}
+{% endblock %}
+
