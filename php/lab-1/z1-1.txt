@@ -1,0 +1,206 @@
+-- #1
+
+SELECT *
+FROM cust
+WHERE snum = 1001;
+
+-- #2
+
+SELECT city, sname, snum, comm
+FROM sal;
+
+-- #3
+
+SELECT rating, cname
+FROM cust
+WHERE city = 'San Jose';
+
+-- #4
+
+SELECT DISTINCT snum
+FROM `ord`;
+
+-- #5
+
+SELECT sname, city
+FROM sal
+WHERE city = 'London'
+  AND comm > 0.11;
+
+
+-- #6
+
+SELECT *
+FROM cust
+WHERE rating <= 200
+  AND city <> 'Rome';
+
+
+-- #7
+
+SELECT *
+FROM `ord`
+WHERE odate IN ('1990-10-03', '1990-10-05');
+
+SELECT *
+FROM `ord`
+WHERE odate = '1990-10-03'
+   OR odate = '1990-10-05';
+
+
+--#8
+
+SELECT *
+FROM cust
+WHERE cname BETWEEN 'A' AND 'H';
+
+-- #9
+
+SELECT *
+FROM sal
+WHERE sname LIKE '%e%';
+
+-- #10
+
+SELECT SUM(amt) AS total_amount
+FROM `ord`
+WHERE odate = '1990-10-03';
+
+
+-- #11
+
+SELECT SUM(amt) AS total_amount
+FROM `ord`
+WHERE snum = 1001;
+
+
+-- #12
+
+SELECT snum, MAX(amt) AS max_order
+FROM `ord`
+GROUP BY snum;
+
+-- #13
+
+SELECT cname
+FROM cust
+WHERE cname LIKE '%s'
+ORDER BY cname
+LIMIT 1;
+
+-- #14
+
+SELECT city, AVG(comm) AS avg_comm
+FROM sal
+GROUP BY city;
+
+
+-- #15
+
+SELECT 
+    o.onum,
+    o.amt * 0.8 AS amt_euro,
+    s.sname,
+    o.amt * s.comm AS commission
+FROM `ord` o
+JOIN sal s ON o.snum = s.snum
+WHERE o.odate = '1990-10-03';
+
+
+-- #16
+
+SELECT 
+    o.onum,
+    s.sname,
+    c.cname
+FROM `ord` o
+JOIN sal s ON o.snum = s.snum
+JOIN cust c ON o.cnum = c.cnum
+WHERE s.city IN ('London', 'Rome')
+ORDER BY o.onum;
+
+-- #17
+
+SELECT 
+    s.sname,
+    SUM(o.amt) AS total_sales,
+    SUM(o.amt * s.comm) AS total_commission
+FROM sal s
+JOIN `ord` o ON s.snum = o.snum
+WHERE o.odate < '1990-10-05'
+GROUP BY s.snum, s.sname
+ORDER BY s.sname;
+
+-- #18
+
+SELECT 
+    o.onum,
+    o.amt,
+    s.sname,
+    c.cname
+FROM `ord` o
+JOIN sal s ON o.snum = s.snum
+JOIN cust c ON o.cnum = c.cnum
+WHERE s.city BETWEEN 'L' AND 'S'
+  AND c.city BETWEEN 'L' AND 'S';
+
+-- #19
+
+SELECT 
+    c1.cname AS customer1,
+    c2.cname AS customer2,
+    c1.snum
+FROM cust c1
+JOIN cust c2 
+  ON c1.snum = c2.snum
+ AND c1.cnum < c2.cnum;
+
+-- #20
+
+SELECT cname
+FROM cust
+WHERE snum IN (
+    SELECT snum
+    FROM sal
+    WHERE comm < 0.13
+);
+
+-- #21
+
+CREATE TABLE sal_copy AS
+SELECT * FROM sal;
+
+DESC sal;
+DESC sal_copy;
+
+SELECT * FROM sal;
+SELECT * FROM sal_copy;
+
+-- #22
+
+INSERT INTO sal VALUES
+(1010, 'Smith', 'Paris', 0.14),
+(1011, 'Brown', 'Rome', 0.12);
+
+SELECT * FROM sal;
+
+DELETE FROM sal
+WHERE snum = 1011;
+
+SELECT * FROM sal;
+
+-- #23
+
+INSERT INTO sal VALUES
+(1012, 'Green', 'Berlin', 0.10),
+(1013, 'White', 'Madrid', 0.11);
+
+SELECT * FROM sal;
+
+UPDATE sal
+SET comm = comm * 2
+WHERE snum >= 0;
+
+SELECT * FROM sal;
+
+
